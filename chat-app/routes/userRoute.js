@@ -3,11 +3,11 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const userSchema = require("../schemas/userSchema");
+const checkLogin = require("../middlewares/checkLogin");
 const User = mongoose.model("User", userSchema);
 const router = express.Router();
 // create new user
 router.post("/create", async (req, res) => {
-  console.log(req.body);
   try {
     const hashPass = await bcrypt.hash(req.body.password, 10);
     const user = new User({
@@ -64,4 +64,17 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/", checkLogin, async (req, res) => {
+  try {
+    const user = await User.find();
+    res.status(200).json({
+      status: "success",
+      data: user,
+    });
+  } catch {
+    res.status(500).json({
+      error: "server side problem!",
+    });
+  }
+});
 module.exports = router;
