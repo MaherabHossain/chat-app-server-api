@@ -5,6 +5,10 @@ const checkLogin = require("../middlewares/checkLogin");
 const checkFriend = require("../middlewares/checkFriend");
 const requestSchema = require("../schemas/requestSchema");
 const convertationSchema = require("../schemas/convertationSchema");
+const sendMessageRequest = require("../controller/Request/sendMessageRequest");
+const seeAllUser = require("../controller/Request/seeAllUser");
+const seeAllRequest = require("../controller/Request/seeAllRequest");
+const acceptMessageRequest = require("../controller/Request/acceptMessageRequest");
 const Request = mongoose.model("Request", requestSchema);
 const Convertation = mongoose.model("Convertation", convertationSchema);
 const router = express.Router();
@@ -15,65 +19,13 @@ router.get("/", (req, res) => {
   });
 });
 // sending message request
-router.post("/send", checkLogin, async (req, res) => {
-  try {
-    const request = new Request({
-      send: req.id,
-      receive: req.body.id,
-    });
-    await request.save();
-    res.status(200).json({
-      message: "friend request sent sucessfully",
-    });
-  } catch {
-    res.status(500).json({
-      error: "there was an server side error",
-    });
-  }
-});
+router.post("/send", checkLogin, sendMessageRequest);
 // see all user in the system
-router.get("/see-all", checkLogin, async (req, res) => {
-  try {
-    const allData = await Request.find({ receive: req.id }).populate("send");
-    res.status(200).json({
-      status: "success",
-      data: allData,
-    });
-  } catch {
-    res.status(500).json({
-      error: "server side error",
-    });
-  }
-});
+router.get("/see-all", checkLogin, seeAllUser);
+// see all message request
+router.get("/all-request", checkLogin, seeAllRequest);
 // accept message request
-router.put("/accept/:id", checkLogin, async (req, res) => {
-  try {
-    const result = await Request.findOneAndUpdate(
-      { send: req.params.id, receive: req.id },
-      {
-        $set: {
-          status: true,
-        },
-      },
-      {
-        new: true,
-      }
-    );
-    const convertation = new Convertation({
-      participantOne: req.id,
-      participantTwo: req.params.id,
-      messages: [],
-    });
-    await convertation.save();
-    res.status(200).json({
-      message: "message request accept successfully",
-    });
-  } catch (err) {
-    res.status(500).json({
-      error: err.message,
-    });
-  }
-});
+router.put("/accept/:id", checkLogin, acceptMessageRequest);
 // i will remove it later .its for test purpose
 router.post("/check-friend", [checkLogin, checkFriend], (req, res) => {
   res.status(200).send({
@@ -110,7 +62,7 @@ router.get("/all-message", async (req, res) => {
 router.get("/single-message", async (req, res) => {
   try {
     const result = await Convertation.findByIdAndUpdate(
-      "61ab6c672c0c9a7ba5d719cd",
+      "61ab8e14858645667c1b0f9a",
       {
         $push: {
           messages: "61a7bc65da5e11eb876bbfd0",
