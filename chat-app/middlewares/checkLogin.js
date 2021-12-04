@@ -9,6 +9,7 @@ const checkLogin = (req, res, next) => {
     req.id = id;
     req.name = name;
     req.email = email;
+    console.log("1")
     next();
   } catch {
     res.status(401).json({
