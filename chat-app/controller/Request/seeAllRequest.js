@@ -1,3 +1,6 @@
+const mongoose = require("mongoose");
+const requestSchema = require("../../schemas/requestSchema");
+const Request = mongoose.model("Request", requestSchema);
 const seeAllRequest = async (req, res) => {
   try {
     const user = await Request.find({ receive: req.id, status: false });

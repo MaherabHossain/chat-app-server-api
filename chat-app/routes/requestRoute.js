@@ -8,6 +8,7 @@ const convertationSchema = require("../schemas/convertationSchema");
 const sendMessageRequest = require("../controller/Request/sendMessageRequest");
 const seeAllUser = require("../controller/Request/seeAllUser");
 const seeAllRequest = require("../controller/Request/seeAllRequest");
+const seeAllFriendController = require("../controller/Request/seeAllFriendController");
 const acceptMessageRequest = require("../controller/Request/acceptMessageRequest");
 const Request = mongoose.model("Request", requestSchema);
 const Convertation = mongoose.model("Convertation", convertationSchema);
@@ -26,6 +27,8 @@ router.get("/see-all", checkLogin, seeAllUser);
 router.get("/all-request", checkLogin, seeAllRequest);
 // accept message request
 router.put("/accept/:id", checkLogin, acceptMessageRequest);
+// see all friend
+router.get("/see-all-friend", checkLogin, seeAllFriendController);
 // i will remove it later .its for test purpose
 router.post("/check-friend", [checkLogin, checkFriend], (req, res) => {
   res.status(200).send({
@@ -34,6 +37,7 @@ router.post("/check-friend", [checkLogin, checkFriend], (req, res) => {
   });
 });
 // testing. i will remove it later
+//now let's fuck
 router.post("/push-message", async (req, res) => {
   try {
     const convertation = new Convertation({

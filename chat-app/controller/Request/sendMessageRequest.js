@@ -1,3 +1,6 @@
+const mongoose = require("mongoose");
+const requestSchema = require("../../schemas/requestSchema");
+const Request = mongoose.model("Request", requestSchema);
 const sendMessageRequest = async (req, res) => {
   try {
     const request = new Request({

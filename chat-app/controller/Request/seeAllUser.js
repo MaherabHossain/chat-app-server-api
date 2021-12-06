@@ -1,6 +1,9 @@
+const mongoose = require("mongoose");
+const userSchema = require("../../schemas/userSchema");
+const User = mongoose.model("User", userSchema);
 const seeAllUser = async (req, res) => {
   try {
-    const allData = await Request.find({ receive: req.id }).populate("send");
+    const allData = await User.find({});
     res.status(200).json({
       status: "success",
       data: allData,

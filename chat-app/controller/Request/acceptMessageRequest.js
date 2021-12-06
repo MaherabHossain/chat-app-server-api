@@ -1,3 +1,8 @@
+const mongoose = require("mongoose");
+const requestSchema = require("../../schemas/requestSchema");
+const convertationSchema = require("../../schemas/convertationSchema");
+const Request = mongoose.model("Request", requestSchema);
+const Convertation = mongoose.model("Convertation", convertationSchema);
 const acceptMessageRequest = async (req, res) => {
   try {
     const result = await Request.findOneAndUpdate(

@@ -30,6 +30,7 @@ router.post("/create", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const user = await User.find({ email: req.body.email });
+    console.log(user.length);
     if (user.length > 0) {
       const isValid = await bcrypt.compare(req.body.password, user[0].password);
       if (isValid) {
@@ -42,7 +43,7 @@ router.post("/login", async (req, res) => {
           },
           process.env.SECRET_KEY,
           {
-            expiresIn: "1h",
+            expiresIn: "1400h",
           }
         );
         res.status(200).json({
@@ -51,12 +52,12 @@ router.post("/login", async (req, res) => {
         });
       } else {
         res.status(401).json({
-          error: "Auth failed!",
+          error: "Auth failed! 1",
         });
       }
     } else {
       res.status(401).json({
-        error: "Auth failed!",
+        error: "Auth failed!2",
       });
     }
   } catch (err) {
