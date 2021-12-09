@@ -12,6 +12,11 @@ const seeAllFriendController = async (req, res) => {
     const friend = [];
     const length = allFriend.length;
     console.log("length" + length);
+    if (length === 0) {
+      res.status(200).json({
+        total_friend: length,
+      });
+    }
     allFriend.forEach(async (item, index) => {
       if (item.send.toString() === req.id) {
         console.log("send");

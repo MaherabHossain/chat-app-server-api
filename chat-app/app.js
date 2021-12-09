@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const checkLogin = require("./middlewares/checkLogin");
 const userRouter = require("./routes/userRoute");
 const requestRoute = require("./routes/requestRoute");
+const messageRoute = require("./routes/messageRoute");
 const app = express();
 dotenv.config();
 app.use(express.json());
@@ -18,6 +19,7 @@ mongoose
 
 app.use("/user", userRouter);
 app.use("/request", requestRoute);
+app.use("/message", messageRoute);
 app.get("/", (req, res) => {
   res.json({
     message: "i am working",
