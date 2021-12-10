@@ -13,17 +13,26 @@ router.post("/send", [checkLogin, checkFriend], async (req, res) => {
     const id = req.body.id;
     const message = req.body.message;
     const conv_id = req.body.conv_id;
-    const result = await Convertation.findByIdAndUpdate(conv_id, {
-      last_message: message,
-    });
-    const msgRes = new Message({
-      message,
+    const messageReq = new Message({
       send: req.id,
-      receive: req.body.id,
+      receive: id,
+      message,
     });
-    await msgRes.save();
+
+    await messageReq.save();
+    await Convertation.findOneAndUpdate(
+      { _id: conv_id },
+      {
+        $set: {
+          lastMessage: message,
+        },
+        $push: {
+          messages: messageReq.id,
+        },
+      }
+    );
     res.status(200).json({
-      message: "message sent successfully",
+      message: "successs",
     });
   } catch (err) {
     res.status(500).json({

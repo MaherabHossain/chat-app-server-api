@@ -21,10 +21,11 @@ const checkFriend = async (req, res, next) => {
     (req.sender = sender), (req.receiver = receiver);
     if (sender.length > 0 || receiver.length > 0) {
       next();
+    } else {
+      res.status(200).json({
+        message: "you are not friend",
+      });
     }
-    res.status(200).json({
-      message: "you are not friend",
-    });
   } catch (err) {
     res.status(400).json({
       error: err.message,
